@@ -25,7 +25,7 @@ func main() {
 		return
 	}
 
-	e4, err := calendar.AddEvent("Покормить кота", "2025/06/02 02:33")
+	e4, err := calendar.AddEvent("Покормить собаку", "2025/06/02 02:33")
 	if err != nil {
 		fmt.Println("Ошибка создания события:", err)
 		return
