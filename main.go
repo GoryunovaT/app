@@ -4,30 +4,38 @@ import (
 	"fmt"
 
 	"github.com/GoryunovaT/app/calendar"
-	"github.com/GoryunovaT/app/events"
 )
 
 func main() {
-	e, err := events.NewEvent("Встреча", "2025/06/12 16:33")
+	_, err := calendar.AddEvent("Встреча", "2025/06/12 16:33")
 	if err != nil {
 		fmt.Println("Ошибка создания события:", err)
 		return
 	}
-	calendar.AddEvent("event1", e)
 
-	e, err = events.NewEvent("Запись к окулисту", "2025/06/25 13:00")
+	e2, err := calendar.AddEvent("Заказать роллы", "2025/03/12 20:43")
 	if err != nil {
 		fmt.Println("Ошибка создания события:", err)
 		return
 	}
-	calendar.AddEvent("event2", e)
 
-	e, err = events.NewEvent("Работа", "2025/06/16 08:00")
+	_, err = calendar.AddEvent("Помыть пол", "2025/06/25 17:50")
 	if err != nil {
 		fmt.Println("Ошибка создания события:", err)
 		return
 	}
-	calendar.AddEvent("event3", e)
 
-	calendar.ShowEvents() // вывод всех событий
+	e4, err := calendar.AddEvent("Покормить кота", "2025/06/02 02:33")
+	if err != nil {
+		fmt.Println("Ошибка создания события:", err)
+		return
+	}
+	calendar.ShowEvents()
+
+	calendar.DeleteEvent(e2.ID)
+	calendar.ShowEvents()
+
+	calendar.EditEvent(e4.ID, "Перевести будильник", "2025/07/14 07:20")
+	calendar.ShowEvents()
+
 }

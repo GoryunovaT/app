@@ -5,19 +5,29 @@ import (
 	"time"
 
 	"github.com/araddon/dateparse"
+	"github.com/google/uuid"
 )
 
 type Event struct {
+	ID      string
 	Title   string
 	StartAt time.Time
 }
 
+func getNextID() string {
+	return uuid.New().String()
+}
+
 func NewEvent(title string, dateStr string) (Event, error) {
+	if !IsValidTitle(title) {
+		return Event{}, errors.New("некорректное наименование задачи")
+	}
 	t, err := dateparse.ParseAny(dateStr)
 	if err != nil {
 		return Event{}, errors.New("неверный формат даты")
 	}
 	return Event{
+		ID:      getNextID(),
 		Title:   title,
 		StartAt: t,
 	}, nil
