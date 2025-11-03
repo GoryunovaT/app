@@ -1,13 +1,28 @@
 package calendar
 
 import (
-	"events" // импортируем пакет с Событиями
+	"errors"
 	"fmt"
+
+	"github.com/GoryunovaT/app/events"
 )
 
-var eventsMap = make(map[string]events.Event) // мапа событий
+var eventsMap = make(map[string]events.Event)
 
-func AddEvent(key string, e events.Event) { // принимаем события в аргументе
-	eventsMap[key] = e                         // добавляем события по ключу
-	fmt.Println("Событие добавлено:", e.Title) // выводим лог для проверки
+func AddEvent(key string, e events.Event) error {
+	if !IsValidTitle(e.Title) {
+		return errors.New("ошибка валидации")
+	}
+	eventsMap[key] = e
+	fmt.Println("Событие добавлено:", e.Title)
+	return nil
+}
+
+func ShowEvents() {
+	for _, event := range eventsMap {
+		fmt.Println(
+			event.Title,
+			"-",
+			event.StartAt.Format("2006-01-02 15:04"))
+	}
 }

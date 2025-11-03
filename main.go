@@ -1,17 +1,33 @@
 package main
 
 import (
-	"app/calendar"
-	"app/events"
 	"fmt"
-	"time"
+
+	"github.com/GoryunovaT/app/calendar"
+	"github.com/GoryunovaT/app/events"
 )
 
 func main() {
-	e := events.Event{ // создаем событие типа Event
-		Title:   "Встреча",
-		StartAt: time.Now(), // простая работа с датой :)
+	e, err := events.NewEvent("Встреча", "2025/06/12 16:33")
+	if err != nil {
+		fmt.Println("Ошибка создания события:", err)
+		return
 	}
-	calendar.AddEvent("event1", e)    // добавляем событие в календарь
-	fmt.Println("Календарь обновлён") // сообщаем о результате
+	calendar.AddEvent("event1", e)
+
+	e, err = events.NewEvent("Запись к окулисту", "2025/06/25 13:00")
+	if err != nil {
+		fmt.Println("Ошибка создания события:", err)
+		return
+	}
+	calendar.AddEvent("event2", e)
+
+	e, err = events.NewEvent("Работа", "2025/06/16 08:00")
+	if err != nil {
+		fmt.Println("Ошибка создания события:", err)
+		return
+	}
+	calendar.AddEvent("event3", e)
+
+	calendar.ShowEvents() // вывод всех событий
 }

@@ -1,8 +1,24 @@
-package events // имя пакета событий
+package events
 
-import "time" // импорт встроенного пакета для даты
+import (
+	"errors"
+	"time"
 
-type Event struct { // тип События
-	Title   string    // заголовок
-	StartAt time.Time // дата начала
+	"github.com/araddon/dateparse"
+)
+
+type Event struct {
+	Title   string
+	StartAt time.Time
+}
+
+func NewEvent(title string, dateStr string) (Event, error) {
+	t, err := dateparse.ParseAny(dateStr)
+	if err != nil {
+		return Event{}, errors.New("неверный формат даты")
+	}
+	return Event{
+		Title:   title,
+		StartAt: t,
+	}, nil
 }
