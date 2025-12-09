@@ -12,10 +12,10 @@ import (
 
 type Calendar struct {
 	calendarEvents map[string]*events.Event
-	storage        *storage.ZipStorage
+	storage        storage.Storage
 }
 
-func NewCalendar(storage *storage.ZipStorage) *Calendar {
+func NewCalendar(storage storage.Storage) *Calendar {
 	if storage == nil {
 		fmt.Println("ошибка: не удалось создать хранилище")
 	}

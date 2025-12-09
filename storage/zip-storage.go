@@ -11,6 +11,13 @@ type ZipStorage struct {
 	filename string
 }
 
+func NewZipStorage(filename string) *ZipStorage {
+	if filename == "" {
+		filename = "calendar.zip"
+	}
+	return &ZipStorage{filename: filename}
+}
+
 func (z *ZipStorage) Save(data []byte) error {
 	f, err := os.Create(z.filename)
 	if err != nil {
