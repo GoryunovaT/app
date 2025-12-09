@@ -37,6 +37,9 @@ func NewEvent(title string, dateStr string, priority Priority) (*Event, error) {
 	if err != nil {
 		return nil, errors.New("неверный формат даты")
 	}
+	if t.Before(time.Now()) {
+		return nil, errors.New("дата события не может быть в прошлом")
+	}
 	return &Event{
 		ID:       getNextID(),
 		Title:    title,
@@ -57,7 +60,33 @@ func (e *Event) Update(title string, date string, priority Priority) error {
 	if err != nil {
 		return errors.New("неверный формат даты")
 	}
+	if newDate.Before(time.Now()) {
+		return errors.New("новая дата не может быть в прошлом")
+	}
+
 	e.Title = title
 	e.StartAt = newDate
+	return nil
+}
+
+func (e *Event) AddReminder(message string, at time.Time) error {
+	if at.After(e.StartAt) {
+		return errors.New("напоминание не может быть позже события")
+	}
+	if at.Before(time.Now()) {
+		return errors.New("время напоминания не может быть в прошлом")
+	}
+	r, err := reminder.NewReminder(message, at)
+	if err != nil {
+		return errors.New("ошибка создания напоминания")
+	}
+	e.Reminder = r
+	return nil
+}
+func (e *Event) RemoveReminder() error {
+	if e.Reminder == nil {
+		return errors.New("у события нет напоминания")
+	}
+	e.Reminder = nil
 	return nil
 }

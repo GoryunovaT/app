@@ -2,20 +2,20 @@ package storage
 
 import "os"
 
-type Storage struct {
+type JsonStorage struct {
 	filename string
 }
 
-func NewStorage(filename string) *Storage {
+func NewStorage(filename string) *JsonStorage {
 	if filename == "" {
 		filename = "calendar.json"
 	}
-	return &Storage{filename: filename}
+	return &JsonStorage{filename: filename}
 }
 
-func (s *Storage) Save(data []byte) error {
+func (s *JsonStorage) Save(data []byte) error {
 	return os.WriteFile(s.filename, data, 0644)
 }
-func (s *Storage) Load() ([]byte, error) {
+func (s *JsonStorage) Load() ([]byte, error) {
 	return os.ReadFile(s.filename)
 }

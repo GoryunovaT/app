@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/GoryunovaT/app/events"
 	"github.com/GoryunovaT/app/storage"
@@ -65,8 +66,8 @@ func (c *Calendar) ShowEvents() {
 }
 
 func (c *Calendar) DeleteEvent(id string) error {
-	e, err := EventsMap[id]
-	if !err {
+	e, exist := EventsMap[id]
+	if !exist {
 		return errors.New("событие не найдено")
 	}
 	delete(EventsMap, id)
@@ -84,5 +85,19 @@ func (c *Calendar) EditEvent(id string, titleNew string, dateStrNew string, prio
 		return err
 	}
 	fmt.Println("Событие изменено на", titleNew)
+	return nil
+}
+
+func (c *Calendar) SetEventReminder(eventID string, message string, at time.Time) error {
+	event, exist := EventsMap[eventID]
+	if !exist {
+		return errors.New("событие не найдено")
+	}
+
+	err := event.AddReminder(message, at)
+	if err != nil {
+		return errors.New("не удалось установить напоминание")
+	}
+	fmt.Println("напоминание установлено")
 	return nil
 }
